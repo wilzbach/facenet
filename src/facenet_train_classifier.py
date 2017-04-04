@@ -122,7 +122,7 @@ def main(args):
             images = []
             for filename in tf.unstack(filenames):
                 file_contents = tf.read_file(filename)
-                image = tf.image.decode_png(file_contents)
+                image = tf.image.decode_jpeg(file_contents)
                 if args.random_rotate:
                     image = tf.py_func(facenet.random_rotate_image, [image], tf.uint8)
                 if args.random_crop:
@@ -299,7 +299,7 @@ def train(args, sess, epoch, image_list, label_list, index_dequeue_op, enqueue_o
     while batch_number < args.epoch_size:
         start_time = time.time()
         feed_dict = {learning_rate_placeholder: lr, phase_train_placeholder:True, batch_size_placeholder:args.batch_size}
-        if (batch_number % 100 == 0):
+        if (batch_number % 5 == 0):
             err, _, step, reg_loss, summary_str = sess.run([loss, train_op, global_step, regularization_losses, summary_op], feed_dict=feed_dict)
             summary_writer.add_summary(summary_str, global_step=step)
         else:
@@ -453,7 +453,7 @@ def parse_arguments(argv):
     parser.add_argument('--lfw_pairs', type=str,
         help='The file containing the pairs to use for validation.', default='data/pairs.txt')
     parser.add_argument('--lfw_file_ext', type=str,
-        help='The file extension for the LFW dataset.', default='png', choices=['jpg', 'png'])
+        help='The file extension for the LFW dataset.', default='jpg', choices=['jpg', 'png'])
     parser.add_argument('--lfw_dir', type=str,
         help='Path to the data directory containing aligned face patches.', default='')
     parser.add_argument('--lfw_batch_size', type=int,

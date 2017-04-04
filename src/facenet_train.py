@@ -102,7 +102,7 @@ def main(args):
             images = []
             for filename in tf.unstack(filenames):
                 file_contents = tf.read_file(filename)
-                image = tf.image.decode_png(file_contents)
+                image = tf.image.decode_jpeg(file_contents)
                 
                 if args.random_crop:
                     image = tf.random_crop(image, [args.image_size, args.image_size, 3])
@@ -488,7 +488,7 @@ def parse_arguments(argv):
     parser.add_argument('--lfw_pairs', type=str,
         help='The file containing the pairs to use for validation.', default='data/pairs.txt')
     parser.add_argument('--lfw_file_ext', type=str,
-        help='The file extension for the LFW dataset.', default='png', choices=['jpg', 'png'])
+        help='The file extension for the LFW dataset.', default='jpg', choices=['jpg', 'png'])
     parser.add_argument('--lfw_dir', type=str,
         help='Path to the data directory containing aligned face patches.', default='~/datasets/lfw/lfw_realigned/')
     parser.add_argument('--lfw_nrof_folds', type=int,
